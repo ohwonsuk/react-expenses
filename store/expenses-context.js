@@ -14,7 +14,10 @@ function expenseReducer(state, action) {
       const id = new Date().toString() + Math.random().toString();
       return [{ ...action.payload, id: id }, ...state];
     case "SET":
-      return action.payload;
+      // firebase에서 불러온 데이터는 최근입력값이 최하단으로 이동
+      // 최근입력값을 맨위로 올리기 위해 reverse() 사용
+      const inverted = action.payload.reverse();
+      return inverted;
     case "UPDATE":
       const updatableExpenseIndex = state.findIndex(
         (expense) => expense.id === action.payload.id

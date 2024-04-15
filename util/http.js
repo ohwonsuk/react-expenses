@@ -3,8 +3,13 @@ import axios from "axios";
 const BACKEND_RUL =
   "https://react-native-expense-439bc-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-export function storeExpense(expenseData) {
-  axios.post(BACKEND_RUL + "/expenses.json", expenseData);
+export async function storeExpense(expenseData) {
+  const response = await axios.post(
+    BACKEND_RUL + "/expenses.json",
+    expenseData
+  );
+  const id = response.data.name; // firebase에서 데이터id는 name 으로 사용
+  return id;
 }
 
 export async function fetchExpenses() {
@@ -23,4 +28,12 @@ export async function fetchExpenses() {
     expenses.push(expenseObj);
   }
   return expenses;
+}
+
+export function updateExpense(id, expenseData) {
+  return axios.put(BACKEND_RUL + `/expenses/${id}.json`, expenseData);
+}
+
+export function deleteExpense(id) {
+  return axios.delete(BACKEND_RUL + `/expenses/${id}.json`);
 }
